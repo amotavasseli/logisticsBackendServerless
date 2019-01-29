@@ -22,17 +22,18 @@ def handler(ctx, data=None, loop=None):
     #     destination += i
     #     count +=1
     
-    req = requests.get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + package['source'][0] + '&destinations=' + package['destinations'][0] + '&key=AIzaSyD27N9mxT47VEQ3MX80dZZJa4_HdczBd_4&mode=transit')
+    req = requests.get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + package['source'][0] + '&destinations=' + package['destination'][0] + '&key=AIzaSyD27N9mxT47VEQ3MX80dZZJa4_HdczBd_4&mode=transit')
     json_response = json.loads(req.content)['rows'][0]['elements'][0]
 
     if(json_response['status']=="\"ZERO_RESULTS\"" or json_response['distance']['value'] <50000):
-        req = requests.get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + package['source'][0] + '&destinations=' + package['destinations'][0] + '&key=AIzaSyD27N9mxT47VEQ3MX80dZZJa4_HdczBd_4&mode=driving')
+        req = requests.get('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + package['source'][0] + '&destinations=' + package['destination'][0] + '&key=AIzaSyD27N9mxT47VEQ3MX80dZZJa4_HdczBd_4&mode=driving')
         json_response = json.loads(req.content)
 
     # json_response = json.dumps(json_response['rows'][0]['elements'][0]['status'])
+    return (json_response)
     
-    if(json_response=="ZERO_RESULTS" or json_response=="\"ZERO_RESULTS\""):
-        return (json_response)
+    # if(json_response=="ZERO_RESULTS" or json_response=="\"ZERO_RESULTS\""):
+    #     return (json_response)
 
 if __name__ == "__main__":
     fdk.handle(handler)
